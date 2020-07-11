@@ -171,7 +171,7 @@ def transform_episode_stats_w_dict(dfs, full_name_dict_to_id, *args, **kwargs):
 def transform_episode_stats(dfs, eng):
     full_name = create_full_name_season_srs(eng).iloc[:, 0].to_dict()
 
-    data_dir = os.path.join(os.path.basename(__file__),
+    data_dir = os.path.join(os.path.dirname(__file__),
                             '../../../data/interim')
     truedorks_yaml_loc = os.path.join(
         data_dir, 'truedorks_contestant_namemap.yaml')
