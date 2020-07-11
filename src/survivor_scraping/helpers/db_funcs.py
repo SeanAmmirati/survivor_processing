@@ -113,9 +113,10 @@ def create_episode_times(con):
 
 
 def get_season_id_by_number_type(con, season_number, season_type):
-    q = fr"""SELECT season_id FROM survivor.season
+    fmt_dict = dict(season_number=season_number, season_type=season_type)
+    q = """SELECT season_id FROM survivor.season
                     WHERE season_number = {season_number}
-                    AND type = '{season_type}'"""
+                    AND type = '{season_type}'""".format(**fmt_dict)
     q = q.replace('%', '%%')
     try:
         res = con.execute(q).fetchall()[0][0]
@@ -136,9 +137,11 @@ def get_alliance_id(con, alliance_name, season_id):
     if pd.isna(alliance_name) or pd.isna(season_id):
         return None
     alliance_name = alliance_name.replace("'", "''")
-    q = fr"""SELECT alliance_id FROM survivor.alliance
+
+    fmt_dict = dict(alliance_name=alliance_name, season_id=season_id)
+    q = """SELECT alliance_id FROM survivor.alliance
                     WHERE name = '{alliance_name}'
-                    AND season_id = {season_id}"""
+                    AND season_id = {season_id}""".format(**fmt_dict)
     q = q.replace('%', '%%')
     try:
         res = con.execute(q).fetchall()[0][0]
@@ -150,9 +153,10 @@ def get_alliance_id(con, alliance_name, season_id):
 def get_tribe_id(con, tribe_name, season_id):
     if pd.isna(tribe_name) or pd.isna(season_id):
         return None
-    q = fr"""SELECT tribe_id FROM survivor.tribe
+    fmt_dict = dict(season_id=int(season_id), tribe_name=tribe_name)
+    q = """SELECT tribe_id FROM survivor.tribe
                     WHERE name = '{tribe_name}'
-                    AND season_id = {int(season_id)}"""
+                    AND season_id = {season_id}""".format(**fmt_dict)
     q = q.replace('%', '%%')
     try:
         res = con.execute(q).fetchall()[0][0]
@@ -182,8 +186,11 @@ def get_attempt_number(con, contestant_season_id,
 
 
 def get_ep_id(con, episode_name, season_id):
-    q = fr"""SELECT episode_id FROM survivor.episode
-             WHERE episode_name = '{episode_name}' AND season_id = {season_id}"""
+
+    fmt_dict = dict(episode_name=episode_name, season_id=season_id)
+    q = """SELECT episode_id FROM survivor.episode
+             WHERE episode_name = '{episode_name}'
+             AND season_id = {season_id}""".format(**fmt_dict)
     q = q.replace('%', '%%')
     try:
         res = con.execute(q).fetchall()[0][0]
@@ -207,9 +214,11 @@ def get_ep_id_by_number(con, episode_number, season_id):
 
     episode_number = alter_episodes_between_geeks_wiki(
         episode_number, season_id)
-    q = fr"""SELECT episode_id FROM survivor.episode
+
+    fmt_dict = dict(episode_number=episode_number, season_id=season_id)
+    q = """SELECT episode_id FROM survivor.episode
              WHERE season_episode_number = {episode_number}
-              AND season_id = {season_id}"""
+              AND season_id = {season_id}""".format(**fmt_dict)
     try:
         res = con.execute(q).fetchall()[0][0]
     except IndexError:
@@ -217,7 +226,8 @@ def get_ep_id_by_number(con, episode_number, season_id):
     return res
 
 
-def get_contestant_id(con, contestant_name, season_id):
-    q = fr"""SELECT contestant_season_id FROM survivor.episode
-             WHERE episode_name = '{episode_name}' AND season_id = {season_id}"""
-    q = q.replace('%', '%%')
+# def get_contestant_id(con, contestant_name, season_id):
+
+#     q = """SELECT contestant_season_id FROM survivor.episode
+#              WHERE episode_name = '{episode_name}' AND season_id = {season_id}"""
+#     q = q.replace('%', '%%')
