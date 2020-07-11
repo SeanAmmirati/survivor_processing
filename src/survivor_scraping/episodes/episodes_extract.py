@@ -6,7 +6,7 @@ import bs4
 
 import pandas as pd
 
-from season_extract import season_url
+from ..season.season_extract import season_url
 from ..helpers.db_funcs import get_ep_id, get_season_id
 
 from ..helpers.extract_helpers import search_for_new_seasons
