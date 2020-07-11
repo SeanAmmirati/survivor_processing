@@ -64,7 +64,7 @@ def create_reddit_df(start_date=datetime(2000, 1, 1),
     return dfs
 
 
-def extract_reddit_dfs(eng, asof=None, stop=None):
+def extract_reddit(eng, asof=None, stop=None):
     if asof is None:
         q = 'SELECT MAX(created_dt) FROM survivor.reddit_submissions'
         asof = eng.execute(q).fetchall()[0][0]

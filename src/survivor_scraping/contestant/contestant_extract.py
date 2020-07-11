@@ -324,7 +324,7 @@ def alter_contestant_name(contestant_name):
     return contestant_name
 
 
-def extract_new_contestants(con, asof=None):
+def extract_contestants(con, asof=None):
     new_seasons = search_for_new_seasons(con, asof=asof)
     season_type = 'Survivor'  # for now, only considering American Survivor
     contestants_df = pd.DataFrame()

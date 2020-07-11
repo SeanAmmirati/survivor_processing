@@ -81,7 +81,7 @@ def determine_season_index(con):
     return index
 
 
-def extract_new_seasons(con, asof=None):
+def extract_seasons(con, asof=None):
     new_seasons = search_for_new_seasons(con, asof)
 
     srs_list = []

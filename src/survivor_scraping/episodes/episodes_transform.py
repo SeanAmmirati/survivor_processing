@@ -286,7 +286,7 @@ def transform_episode_df(ep_df, season_to_id, name_mapping, contestants):
     return added, vc_df, fw_df, sq_df
 
 
-def transform_new_episodes(ep_df, eng):
+def transform_episodes(ep_df, eng):
     season_to_id = create_season_name_to_id(eng)
     name_mapping = create_full_name_season_srs(eng)
     contestants = pd.read_sql('''SELECT c.first_name, c.last_name, cs.season_id, cs.contestant_season_id

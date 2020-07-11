@@ -1,7 +1,7 @@
 from ..helpers.load_helpers import upsert
 
 
-def load_new_episodes(transformed_dfs, eng):
+def load_episodes(transformed_dfs, eng):
     table_names = ['episode', 'voting_confessional',
                    'final_words', 'story_quotes']
     conflict_cols = ['episode_id',

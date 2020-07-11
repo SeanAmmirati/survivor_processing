@@ -160,7 +160,7 @@ def transform_episode_stats_w_dict(dfs, full_name_dict_to_id, *args, **kwargs):
     return dfs
 
 
-def transform_episode_statistics(dfs, eng):
+def transform_episode_stats(dfs, eng):
     full_name = create_full_name_season_srs(eng).iloc[:, 0].to_dict()
 
     with open('../../data/interim/truedorks_contestant_namemap.yaml', 'r') as f:

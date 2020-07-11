@@ -74,6 +74,6 @@ def transform_season_df(season_df, name_mapping):
     return added
 
 
-def transform_new_seasons(season_df, eng):
+def transform_seasons(season_df, eng):
     name_srs = create_full_name_season_srs(eng)
     return transform_season_df(season_df, name_srs)

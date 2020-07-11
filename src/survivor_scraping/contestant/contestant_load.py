@@ -1,7 +1,7 @@
 from ..helpers.load_helpers import upsert
 
 
-def load_new_contestants(transformed_dfs, eng):
+def load_contestants(transformed_dfs, eng):
     table_names = ['contestant_season', 'contestant',
                    'alliance', 'tribe']
     conflict_cols = ['contestant_season_id',

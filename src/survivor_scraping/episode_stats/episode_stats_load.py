@@ -1,7 +1,7 @@
 from ..helpers.load_helpers import upsert
 
 
-def load_new_episode_stats(transformed_dfs, eng):
+def load_episode_stats(transformed_dfs, eng):
     dict_keys_to_tables = {
         'tribal_council': 'vote',
         'reward_challenge': 'reward_challenge',

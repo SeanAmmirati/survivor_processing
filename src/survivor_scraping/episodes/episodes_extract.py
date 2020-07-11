@@ -200,7 +200,7 @@ def determine_ep_index(con):
     return index
 
 
-def extract_new_episodes(con, asof=None):
+def extract_episodes(con, asof=None):
     new_seasons = search_for_new_seasons(con, asof=asof)
     season_type = 'Survivor'  # for now, only considering American Survivor
     episodes_df = pd.DataFrame()

@@ -380,7 +380,7 @@ season_type_map = {
 }
 
 
-def extract_episode_statistics(eng, data_path='../data/raw/Data From Geeks/', asof=None):
+def extract_episode_stats(eng, data_path='../data/raw/Data From Geeks/', asof=None):
     raw_files = glob.glob(f'{data_path}/*')
     new_seasons = search_for_new_seasons(eng, asof=asof)
 

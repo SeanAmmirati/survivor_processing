@@ -1,7 +1,7 @@
 from ..helpers.load_helpers import upsert
 
 
-def load_new_reddit_dfs(transformed_dfs, eng):
+def load_reddit(transformed_dfs, eng):
     table_list = ['submissions', 'comments']
     table_list = ['reddit_' + t for t in table_list]
 
