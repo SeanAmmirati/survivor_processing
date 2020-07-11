@@ -33,7 +33,7 @@ def create_contestant_season_dict(eng, conf_df):
     return contestant_season_to_id_dict
 
 
-def transform_confessionals(eng, conf_df):
+def transform_confessionals(conf_df, eng):
     manual_additions = {
         'cochran_5': 123,
         'roxy_35': 421,
