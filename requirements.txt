@@ -1,17 +1,166 @@
-# =============================================================================
-# DEPRECATION WARNING:
-#
-# The file `requirements.txt` does not influence the package dependencies and
-# will not be automatically created in the next version of PyScaffold (v4.x).
-#
-# Please have look at the docs for better alternatives
-# (`Dependency Management` section).
-# =============================================================================
-#
-# Add your pinned requirements so that they can be easily installed with:
-# pip install -r requirements.txt
-# Remember to also add them in setup.cfg but unpinned.
-# Example:
-# numpy==1.13.3
-# scipy==1.0
-#
+alembic==1.4.2
+anyjson==0.3.3
+apache-airflow @ file:///opt/concourse/worker/volumes/live/749003ac-aa99-4678-50c8-ee116f23fe07/volume/airflow-split_1593114304055/work
+apispec==1.3.3
+appnope==0.1.0
+argcomplete @ file:///home/conda/feedstock_root/build_artifacts/argcomplete_1588157239310/work
+argon2-cffi==19.1.0
+arrow @ file:///Users/runner/miniforge3/conda-bld/arrow_1592592080004/work
+astroid @ file:///Users/runner/miniforge3/conda-bld/astroid_1591645088120/work
+attrs==19.3.0
+autopep8 @ file:///home/conda/feedstock_root/build_artifacts/autopep8_1591017828430/work
+Babel==2.8.0
+backcall==0.1.0
+bcrypt==3.1.7
+beautifulsoup4 @ file:///Users/runner/miniforge3/conda-bld/beautifulsoup4_1589760920330/work
+bleach @ file:///home/conda/feedstock_root/build_artifacts/bleach_1588608214987/work
+brotlipy==0.7.0
+cached-property==1.5.1
+cattrs==1.0.0
+certifi==2020.6.20
+cffi==1.14.0
+chardet==3.0.4
+click==7.1.2
+colorama==0.4.3
+colorlog==4.1.0
+colour==0.1.5
+configparser==5.0.0
+croniter==0.3.30
+cryptography==2.9.2
+decorator==4.4.2
+defusedxml==0.6.0
+dill @ file:///home/conda/feedstock_root/build_artifacts/dill_1592315758554/work
+docutils==0.16
+entrypoints==0.3
+et-xmlfile==1.0.1
+flake8 @ file:///home/conda/feedstock_root/build_artifacts/flake8_1591898334868/work
+Flask==1.1.2
+Flask-Admin @ file:///tmp/build/80754af9/flask-admin_1592429635880/work
+Flask-AppBuilder @ file:///tmp/build/80754af9/flask-appbuilder_1593098200462/work
+Flask-Babel==0.12.2
+Flask-Caching==1.7.1
+Flask-JWT-Extended @ file:///home/conda/feedstock_root/build_artifacts/flask-jwt-extended_1588273568824/work
+Flask-Login==0.4.1
+Flask-OpenID==1.2.5
+Flask-SQLAlchemy @ file:///home/conda/feedstock_root/build_artifacts/flask-sqlalchemy_1590588246407/work
+flask-swagger==0.2.13
+Flask-WTF==0.14.3
+funcsigs==1.0.2
+furl==2.1.0
+future==0.18.2
+fuzzywuzzy==0.17.0
+graphviz==0.14
+gunicorn==20.0.4
+idna==2.9
+importlib-metadata @ file:///Users/runner/miniforge3/conda-bld/importlib-metadata_1591451759268/work
+infinity==1.4
+intervals==0.8.1
+ipykernel @ file:///Users/runner/miniforge3/conda-bld/ipykernel_1590020220914/work/dist/ipykernel-5.3.0-py3-none-any.whl
+ipython @ file:///Users/runner/miniforge3/conda-bld/ipython_1590796925971/work
+ipython-genutils==0.2.0
+ipywidgets==7.5.1
+iso8601==0.1.12
+isort==4.3.21
+itsdangerous==1.1.0
+jdcal==1.4.1
+jedi==0.17.0
+Jinja2==2.11.2
+json-merge-patch==0.2
+jsonschema==3.2.0
+jupyter-client==6.1.3
+jupyter-console==6.1.0
+jupyter-core==4.6.3
+lazy-object-proxy==1.4.3
+lockfile==0.12.2
+lxml @ file:///Users/runner/miniforge3/conda-bld/lxml_1589927536711/work
+Mako==1.1.0
+Markdown @ file:///home/conda/feedstock_root/build_artifacts/markdown_1589366472132/work
+MarkupSafe==1.1.1
+marshmallow @ file:///home/conda/feedstock_root/build_artifacts/marshmallow_1594282733088/work
+marshmallow-enum==1.5.1
+marshmallow-sqlalchemy @ file:///home/conda/feedstock_root/build_artifacts/marshmallow-sqlalchemy_1591012357343/work
+mccabe==0.6.1
+mistune==0.8.4
+nbconvert==5.6.1
+nbformat==5.0.6
+notebook @ file:///Users/runner/miniforge3/conda-bld/notebook_1588887231072/work
+numpy @ file:///Users/runner/miniforge3/conda-bld/numpy_1588605105042/work
+openpyxl==3.0.3
+orderedmultidict==1.0.1
+packaging @ file:///home/conda/feedstock_root/build_artifacts/packaging_1589925210001/work
+pandas @ file:///Users/runner/miniforge3/conda-bld/pandas_1590752959603/work
+pandocfilters==1.4.2
+parso==0.7.0
+passlib==1.7.1
+pendulum==1.4.4
+pexpect==4.8.0
+phonenumbers==8.10.14
+pickleshare==0.7.5
+praw @ file:///home/conda/feedstock_root/build_artifacts/praw_1588468450379/work
+prawcore @ file:///home/conda/feedstock_root/build_artifacts/prawcore_1588466065629/work
+prison==0.1.3
+prometheus-client @ file:///home/conda/feedstock_root/build_artifacts/prometheus_client_1590412252446/work
+prompt-toolkit==3.0.5
+psutil==5.7.0
+psycopg2==2.8.5
+ptyprocess==0.6.0
+pycodestyle @ file:///home/conda/feedstock_root/build_artifacts/pycodestyle_1589305246696/work
+pycparser==2.20
+pyflakes==2.2.0
+Pygments==2.6.1
+PyJWT==1.7.1
+pylint @ file:///Users/runner/miniforge3/conda-bld/pylint_1588950500861/work
+pyOpenSSL==19.1.0
+pyparsing==2.4.7
+PyQt5==5.12.3
+PyQt5-sip==4.19.18
+PyQtChart==5.12
+PyQtWebEngine==5.12.1
+pyrsistent==0.16.0
+PySocks==1.7.1
+python-daemon==2.2.4
+python-dateutil==2.8.1
+python-docx==0.8.10
+python-editor==1.0.4
+python-Levenshtein==0.12.0
+python3-openid==3.1.0
+pytz==2020.1
+pytzdata==2019.3
+PyYAML==5.3.1
+pyzmq==19.0.1
+qtconsole @ file:///home/conda/feedstock_root/build_artifacts/qtconsole_1589392299544/work
+QtPy==1.9.0
+requests==2.23.0
+Send2Trash==1.5.0
+setproctitle==1.1.10
+six @ file:///home/conda/feedstock_root/build_artifacts/six_1590081179328/work
+soupsieve @ file:///Users/runner/miniforge3/conda-bld/soupsieve_1589778516085/work
+SQLAlchemy @ file:///Users/runner/miniforge3/conda-bld/sqlalchemy_1589421160072/work
+SQLAlchemy-JSONField==0.9.0
+SQLAlchemy-Utils @ file:///home/conda/feedstock_root/build_artifacts/sqlalchemy-utils_1590399091881/work
+-e git+git@github.com:SeanAmmirati/survivor_processing.git@c1c51f5b00b2a546dd9f1a904e2851fd91094112#egg=survivor_scraping
+tabulate==0.8.7
+tenacity @ file:///Users/runner/miniforge3/conda-bld/tenacity_1588242780113/work
+termcolor==1.1.0
+terminado==0.8.3
+testpath==0.4.4
+text-unidecode==1.3
+thrift==0.13.0
+toml @ file:///home/conda/feedstock_root/build_artifacts/toml_1589469402899/work
+tornado==6.0.4
+traitlets==4.3.3
+typing-extensions @ file:///home/conda/feedstock_root/build_artifacts/typing_extensions_1588470653596/work
+tzlocal @ file:///home/conda/feedstock_root/build_artifacts/tzlocal_1588939190034/work
+unicodecsv==0.14.1
+update-checker==0.17
+urllib3==1.25.9
+wcwidth @ file:///home/conda/feedstock_root/build_artifacts/wcwidth_1591117871324/work
+webencodings==0.5.1
+websocket-client==0.57.0
+Werkzeug==1.0.1
+widgetsnbextension==3.5.1
+wrapt==1.11.2
+WTForms==2.3.1
+xlrd==1.2.0
+zipp==3.1.0
+zope.deprecation==4.4.0
