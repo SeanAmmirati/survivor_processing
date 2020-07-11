@@ -1,7 +1,10 @@
 survivor_scraping
 ==============================
+The start of a WiP project to build an ETL pipeline of various online sources of data related to the reality TV show Survivor. 
 
-A short description of the project.
+Currently, there are ETL scripts that will scrape and otherwise collect data from a few different sources related to the TV show. 
+
+Roadmap includes formalizing some of the results here, adding Airflow DAGs to perform these automatically, and adding SQL Alchemy information for the table schemas that I am currently using. 
 
 Project Organization
 ------------
