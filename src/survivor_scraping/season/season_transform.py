@@ -63,6 +63,7 @@ def transform_season_df(season_df, name_mapping):
                       inplace=False, name_mapping=name_mapping)
 
     drop_columns = ['filmingdates', 'seasonrun', 'winner', 'runnerup']
+    drop_columns = added.columns[added.columns.isin(drop_columns)]
 
     added.drop(columns=drop_columns, inplace=True)
 

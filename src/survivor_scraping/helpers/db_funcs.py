@@ -33,7 +33,7 @@ LEFT JOIN (SELECT voted_for_id,
 	  FROM survivor.vote
 	  GROUP BY voted_for_id) v
 ON eps.contestant_id = v.voted_for_id
-LEFT JOIN (SELECT contestant_id, SUM(percentage_of_win) as individual_wins
+LEFT JOIN (SELECT contestant_id, SUM(win_pct) as individual_wins
 		   FROM survivor.immunity_challenge ic
 		   WHERE team = 1
 		   GROUP BY contestant_id) ic

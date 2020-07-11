@@ -149,21 +149,28 @@ def transform_episodal_data(dfs, full_name_dict_to_id, *args, **kwargs):
 
 def transform_episode_stats_w_dict(dfs, full_name_dict_to_id, *args, **kwargs):
     dfs = deepcopy(dfs)
-    dfs['overall_episode'] = overall_transform(
-        dfs['overall_episode'].copy(), full_name_dict_to_id)
-    dfs['immunity_challenge'] = ic_transform(
-        dfs['immunity_challenge'].copy(), full_name_dict_to_id)
-    dfs['reward_challenge'] = rc_transform(
-        dfs['reward_challenge'].copy(), full_name_dict_to_id)
-    dfs['tribal_council'] = tc_transform(
-        dfs['tribal_council'].copy(), full_name_dict_to_id)
+    if not dfs['overall_episode'].empty:
+        dfs['overall_episode'] = overall_transform(
+            dfs['overall_episode'].copy(), full_name_dict_to_id)
+
+    if not dfs['immunity_challenge'].empty:
+        dfs['immunity_challenge'] = ic_transform(
+            dfs['immunity_challenge'].copy(), full_name_dict_to_id)
+
+    if not dfs['reward_challenge'].empty:
+        dfs['reward_challenge'] = rc_transform(
+            dfs['reward_challenge'].copy(), full_name_dict_to_id)
+
+    if not dfs['tribal_council'].empty:
+        dfs['tribal_council'] = tc_transform(
+            dfs['tribal_council'].copy(), full_name_dict_to_id)
     return dfs
 
 
 def transform_episode_stats(dfs, eng):
     full_name = create_full_name_season_srs(eng).iloc[:, 0].to_dict()
 
-    with open('../../data/interim/truedorks_contestant_namemap.yaml', 'r') as f:
+    with open('survivor_processing/data/interim/truedorks_contestant_namemap.yaml', 'r') as f:
         full_name.update(yaml.load(f))
 
     dfs = transform_episode_stats_w_dict(dfs, full_name)

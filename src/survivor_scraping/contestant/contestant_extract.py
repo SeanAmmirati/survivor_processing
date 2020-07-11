@@ -13,7 +13,8 @@ from ..helpers.db_funcs import create_full_name_season_srs, get_season_id, creat
 def create_contestant_url(first, last):
     first = first.replace(' ', '_')
     last = last.replace(' ', '_')
-    return f'http://survivor.wikia.com/wiki/{first}_{last}'
+    fmt_dict = dict(first=first, last=last)
+    return 'http://survivor.wikia.com/wiki/{first}_{last}'.format(**fmt_dict)
 
 
 def process_contestant_url(url):
@@ -128,7 +129,7 @@ def extract_contestant_info(soup):
 # Tribe
 
 def tribe_url(tribe):
-    return f'https://survivor.fandom.com/wiki/{tribe}'
+    return 'https://survivor.fandom.com/wiki/{tribe}'.format(tribe=tribe)
 
 
 def process_tribe(tribe):
@@ -190,7 +191,7 @@ def extract_tribe_info(soup):
 
 # Alliances
 def alliance_url(alliance):
-    return f'https://survivor.fandom.com/wiki/{alliance}'
+    return 'https://survivor.fandom.com/wiki/{alliance}'.format(alliance=alliance)
 
 
 def process_alliance(alliance):
@@ -376,38 +377,41 @@ def extract_contestants(con, asof=None):
     u_alliances = find_unique_alliances(contestants_df)
 
     tribal_df = pd.DataFrame([process_tribe(t) for t in u_tribes])
-    tribal_df['name'] = u_tribes
+    if not tribal_df.empty:
+        tribal_df['name'] = u_tribes
 
-    tribal_df['season_id'] = tribal_df['season'].apply(
-        lambda x: get_season_id(con, x))
+        tribal_df['season_id'] = tribal_df['season'].apply(
+            lambda x: get_season_id(con, x))
 
-    tribal_df['tribe_id'] = tribal_df[['name', 'season_id']].apply(
-        lambda x: get_tribe_id(con, *x), axis=1)
+        tribal_df['tribe_id'] = tribal_df[['name', 'season_id']].apply(
+            lambda x: get_tribe_id(con, *x), axis=1)
 
-    if tribal_df['tribe_id'].isnull().any():
-        null_bool = tribal_df['tribe_id'].isnull()
-        new_idx = determine_tribe_index(con)
-        end_new_idx = new_idx + null_bool.sum()
-        full_id = pd.Series(np.arange(new_idx, end_new_idx),
-                            index=tribal_df[null_bool].index)
-        tribal_df['tribe_id'] = tribal_df['tribe_id'].fillna(full_id)
+        if tribal_df['tribe_id'].isnull().any():
+            null_bool = tribal_df['tribe_id'].isnull()
+            new_idx = determine_tribe_index(con)
+            end_new_idx = new_idx + null_bool.sum()
+            full_id = pd.Series(np.arange(new_idx, end_new_idx),
+                                index=tribal_df[null_bool].index)
+            tribal_df['tribe_id'] = tribal_df['tribe_id'].fillna(full_id)
 
     alliances_df = pd.DataFrame([process_alliance(a) for a in u_alliances])
-    alliances_df['name'] = u_alliances
-    alliances_df['season_id'] = alliances_df['season'].apply(
-        lambda x: get_season_id(con, x))
 
-    alliances_df['alliance_id'] = alliances_df[['name', 'season_id']].apply(
-        lambda x: get_alliance_id(con, *x), axis=1)
+    if not alliances_df.empty:
+        alliances_df['name'] = u_alliances
+        alliances_df['season_id'] = alliances_df['season'].apply(
+            lambda x: get_season_id(con, x))
 
-    if alliances_df['alliance_id'].isnull().any():
-        null_bool = alliances_df['alliance_id'].isnull()
-        new_idx = determine_alliance_index(con)
-        end_new_idx = new_idx + null_bool.sum()
-        full_id = pd.Series(np.arange(new_idx, end_new_idx),
-                            index=alliances_df[null_bool].index)
-        alliances_df['alliance_id'] = alliances_df['alliance_id'].fillna(
-            full_id)
+        alliances_df['alliance_id'] = alliances_df[['name', 'season_id']].apply(
+            lambda x: get_alliance_id(con, *x), axis=1)
+
+        if alliances_df['alliance_id'].isnull().any():
+            null_bool = alliances_df['alliance_id'].isnull()
+            new_idx = determine_alliance_index(con)
+            end_new_idx = new_idx + null_bool.sum()
+            full_id = pd.Series(np.arange(new_idx, end_new_idx),
+                                index=alliances_df[null_bool].index)
+            alliances_df['alliance_id'] = alliances_df['alliance_id'].fillna(
+                full_id)
 
     return contestants_df, tribal_df, alliances_df
 

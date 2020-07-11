@@ -38,6 +38,9 @@ def sync_with_remote(df, eng, table_name):
 
 
 def add_to_df(raw_df, processing_dict, inplace=False, *args, **kwargs):
+    if raw_df.empty:
+        return raw_df
+
     if not inplace:
         raw_df = raw_df.copy()
 

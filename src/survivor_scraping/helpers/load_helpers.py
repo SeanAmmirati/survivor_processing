@@ -2,7 +2,8 @@ import pandas as pd
 
 
 def upsert(df, eng, table, key_cols):
-
+    if df.empty:
+        return
     remote_cols = pd.read_sql(
         f'SELECT * FROM survivor.{table} LIMIT 1', coerce_float=True, con=eng)
     remote_cols = [c for c in remote_cols if c not in ['updated', 'created']]

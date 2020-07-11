@@ -140,6 +140,8 @@ def create_full_dict_df(ep_df, name_mapping, contestants, df_creator):
 
 
 def create_full_vc_df(ep_df, name_mapping, contestants):
+    if ep_df.empty:
+        return ep_df
     extract_pattern = ('(\(((vot(ing|es) (against|for) (.+?))|'
                        '(changes (vote) to (.+?))|(voting to (kidnap) (.+?)))\) )?(.*)')
 
@@ -158,13 +160,16 @@ def create_full_vc_df(ep_df, name_mapping, contestants):
 
 
 def create_full_sq_df(ep_df, name_mapping, contestants):
-
+    if ep_df.empty:
+        return ep_df
     sq_df = create_full_dict_df(ep_df, name_mapping, contestants, create_sq_df)
     sq_df.rename(columns={'id': 'contestant_id'}, inplace=True)
     return sq_df
 
 
 def create_full_fw_df(ep_df, name_mapping, contestants):
+    if ep_df.empty:
+        return ep_df
     fw_df = create_full_dict_df(ep_df, name_mapping, contestants, create_fw_df)
     fw_df.rename(columns={'id': 'contestant_id',
                           'person': 'contestant_id'}, inplace=True)
@@ -276,6 +281,8 @@ def transform_episode_df(ep_df, season_to_id, name_mapping, contestants):
 
     drop_columns = ['voting_confessionals', 'final_words',
                     'story_quotes', 'share', 'episodenumber', 'season']
+
+    drop_columns = added.columns[added.columns.isin(drop_columns)]
 
     added.drop(columns=drop_columns, inplace=True)
 

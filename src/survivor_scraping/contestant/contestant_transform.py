@@ -116,6 +116,8 @@ def transform_alliance_df(alliance_df, full_name_to_id):
     drop_cols = ['founder', 'lowestplacingmember',
                  'highestplacingmember', 'season']
 
+    drop_cols = added.columns[added.columns.isin(drop_cols)]
+
     added = added.drop(columns=drop_cols)
 
     return added
@@ -132,6 +134,7 @@ def transform_tribe_df(tribe_df, full_name_to_id):
                       inplace=False)
     drop_cols = ['lowestplacingmember', 'opponents',
                  'highestplacingmember', 'season']
+    drop_cols = added.columns[added.columns.isin(drop_cols)]
 
     added = added.drop(columns=drop_cols)
     return added
@@ -160,10 +163,12 @@ def transform_contestant_df(contestant, con):
                              'first_name', 'last_name', 'nickname', 'twitter', 'sex', 'image', 'wikia']
 
     relevant_columns = contestant.columns[contestant.columns.isin(
-        contestant_level_cols)]
+        contestant_level_cols)].tolist()
     contestant_season = contestant.drop(columns=relevant_columns).copy()
-    contestant = contestant[relevant_columns.tolist(
-    ) + ['contestant_id']].drop_duplicates()
+
+    if 'contestant_id' in contestant:
+        relevant_columns += ['contestant_id']
+    contestant = contestant[relevant_columns].drop_duplicates()
 
     processing_columns = {
         ('attempt_number',): process_attempt_numbers,
@@ -173,15 +178,18 @@ def transform_contestant_df(contestant, con):
     added_contestant_season = add_to_df(contestant_season, processing_columns, con=con,
                                         inplace=False)
 
-    agg_q_results = pull_agg_contestant_stats(con)
-    added_contestant_season = added_contestant_season.merge(
-        agg_q_results, on='contestant_season_id')
+    if not added_contestant_season.empty:
+        agg_q_results = pull_agg_contestant_stats(con)
+        added_contestant_season = added_contestant_season.merge(
+            agg_q_results, on='contestant_season_id')
 
     contestant_season_drops = added_contestant_season.columns[
         added_contestant_season.columns.str.contains('tribes|alliances')
     ].tolist()
 
     contestant_season_drops += ['first_name', 'last_name', 'season_id_x']
+    contestant_season_drops = added_contestant_season.columns[
+        added_contestant_season.columns.isin(contestant_season_drops)]
 
     added_contestant_season = added_contestant_season.drop(
         columns=contestant_season_drops)
