@@ -13,7 +13,8 @@ from ..helpers.db_funcs import create_full_name_season_srs, get_season_id, creat
 def create_contestant_url(first, last):
     first = first.replace(' ', '_')
     last = last.replace(' ', '_')
-    return f'http://survivor.wikia.com/wiki/{first}_{last}'
+    fmt_dict = dict(first=first, last=last)
+    return 'http://survivor.wikia.com/wiki/{first}_{last}'.format(**fmt_dict)
 
 
 def process_contestant_url(url):
@@ -128,7 +129,7 @@ def extract_contestant_info(soup):
 # Tribe
 
 def tribe_url(tribe):
-    return f'https://survivor.fandom.com/wiki/{tribe}'
+    return 'https://survivor.fandom.com/wiki/{tribe}'.format(tribe=tribe)
 
 
 def process_tribe(tribe):
@@ -190,7 +191,7 @@ def extract_tribe_info(soup):
 
 # Alliances
 def alliance_url(alliance):
-    return f'https://survivor.fandom.com/wiki/{alliance}'
+    return 'https://survivor.fandom.com/wiki/{alliance}'.format(alliance=alliance)
 
 
 def process_alliance(alliance):

@@ -4,11 +4,18 @@ import pandas as pd
 
 
 def api_request(subreddit, start_date, end_date, sub_or_comment='submission'):
-    return f'https://api.pushshift.io/reddit/{sub_or_comment}/search/?after={int(start_date.timestamp())}&before={int(end_date.timestamp())}&sort=asc&subreddit={subreddit}&limit=1000'
+    fmt_dict = dict(sub_or_comment=sub_or_comment,
+                    after_ts=int(start_date.timestamp()),
+                    before_ts=int(end_date.timestamp()),
+                    subreddit=subreddit)
+    return ('https://api.pushshift.io/reddit/{sub_or_comment}/search/'
+            '?after={after_ts}'
+            '&before={before_ts}'
+            '&sort=asc&subreddit={subreddit}&limit=1000').format(**fmt_dict)
 
 
 def get_comment_id_url(submission_id):
-    return f'https://api.pushshift.io/reddit/submission/comment_ids/{submission_id}'
+    return 'https://api.pushshift.io/reddit/submission/comment_ids/{submission_id}'.format(submission_id=submission_id)
 
 
 def get_comment_ids(submission_id):
@@ -20,7 +27,7 @@ def get_comment_ids(submission_id):
 
 
 def extract_comment_data(comment_id):
-    return f'https://api.pushshift.io/reddit/comment/search/?ids={comment_id}'
+    return 'https://api.pushshift.io/reddit/comment/search/?ids={comment_id}'.format(comment_id=comment_id)
 
 
 def extract_comment_df(submission_id):

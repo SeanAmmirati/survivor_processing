@@ -43,7 +43,7 @@ def create_data_dict():
 
 def save_survivor_excel(sheets_id, readable_name, dest_folder='../data/raw'):
     url = DOCS_URL_TEMPLATE.format(**dict(id=sheets_id))
-    f_name = f'{readable_name}.xlsx'
+    f_name = '{readable_name}.xlsx'.format(readable_name=readable_name)
 
     req = requests.get(url)
 
@@ -381,7 +381,7 @@ season_type_map = {
 
 
 def extract_episode_stats(eng, data_path='../data/raw/Data From Geeks/', asof=None):
-    raw_files = glob.glob(f'{data_path}/*')
+    raw_files = glob.glob('{data_path}/*'.format(data_path=data_path))
     new_seasons = search_for_new_seasons(eng, asof=asof)
 
     new_seasons_df = pd.read_sql(con=eng,
@@ -400,7 +400,8 @@ def extract_episode_stats(eng, data_path='../data/raw/Data From Geeks/', asof=No
     for f in raw_files:
         if '~' in f or 'total_voting' in f:
             continue
-        print(f'Extracting data from {os.path.realpath(f)}...')
+        print('Extracting data from {path}...'.format(
+            path=os.path.realpath(f)))
         wb = load_workbook(f, data_only=True)
         season_dfs = find_data_for_season(wb)
         season_raw = os.path.basename(f).split('_')[0]

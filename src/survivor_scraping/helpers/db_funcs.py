@@ -58,7 +58,9 @@ def create_full_name_season_srs(con):
 def search_based_on_first_name_season_id(eng, first_name, season):
     first_name = first_name.lower()
     key = first_name + '_' + str(season)
-    q = f"""
+
+    fmt_dict = dict(first_name=first_name, season_id=int(season))
+    q = """
     SELECT cs.contestant_season_id
     FROM survivor.contestant_season cs
     JOIN survivor.contestant c
@@ -67,8 +69,8 @@ def search_based_on_first_name_season_id(eng, first_name, season):
     ON cs.season_id = s.season_id
     WHERE LOWER(c.first_name) = '{first_name}'
     AND s.type = 'Survivor'
-    AND s.season_id = {int(season)}
-    """
+    AND s.season_id = {season_id}
+    """.format(**fmt_dict)
     try:
         id_ = eng.execute(q).fetchall()[0][0]
     except IndexError:
@@ -125,7 +127,7 @@ def get_season_id_by_number_type(con, season_number, season_type):
 def get_season_id(con, season_name):
     if pd.isna(season_name):
         return None
-    q = f"SELECT season_id FROM survivor.season WHERE name = '{season_name}'"
+    q = "SELECT season_id FROM survivor.season WHERE name = '{season_name}'"
     res = con.execute(q).fetchall()[0][0]
     return res
 
@@ -161,18 +163,18 @@ def get_tribe_id(con, tribe_name, season_id):
 
 def get_attempt_number(con, contestant_season_id,
                        contestant_id):
-    q = f"""SELECT attempt_number
+    q = """SELECT attempt_number
            FROM survivor.contestant_season
-           WHERE contestant_season_id = '{int(contestant_season_id)}'"""
+           WHERE contestant_season_id = '{cont_id}'""".format(cont_id=int(contestant_season_id))
 
     print(contestant_season_id)
     try:
         res = con.execute(q).fetchall()[0][0]
     except IndexError:
         try:
-            q_max = f"""SELECT MAX(attempt_number) + 1
+            q_max = """SELECT MAX(attempt_number) + 1
                    FROM survivor.contestant_season
-                   WHERE contestant_id = '{int(contestant_id)}'"""
+                   WHERE contestant_id = '{cont_id}'""".format(cont_id=int(contestant_id))
             res = con.execute(q_max).fetchall()[0][0]
         except (IndexError, ValueError):
             res = 1
