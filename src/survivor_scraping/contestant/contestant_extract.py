@@ -5,7 +5,7 @@ import pandas as pd
 import numpy as np
 
 import re
-from season_extract import season_url
+from ..season.season_extract import season_url
 from ..helpers.extract_helpers import search_for_new_seasons
 from ..helpers.db_funcs import create_full_name_season_srs, get_season_id, create_full_name_srs, get_tribe_id, get_alliance_id
 
