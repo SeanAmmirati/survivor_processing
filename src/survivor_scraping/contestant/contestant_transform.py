@@ -22,7 +22,8 @@ def process_attempt_numbers(df, con, *args, **kwargs):
 def find_tribe_by_attempt_number(row, con):
     attempt_num_int = int(row["attempt_number"])
     attempt_num_int = '' if attempt_num_int == 1 else attempt_num_int
-    column_name = f'tribes{attempt_num_int}'
+    column_name = 'tribes{attempt_num_int}'.format(
+        attempt_num_int=attempt_num_int)
     season_id = row['season_id']
     tribe_ids = [None] * 4
 
@@ -37,7 +38,8 @@ def find_tribe_by_attempt_number(row, con):
 def find_alliance_by_attempt_number(row, con):
     attempt_num_int = int(row["attempt_number"])
     attempt_num_int = '' if attempt_num_int == 1 else attempt_num_int
-    column_name = f'alliances{attempt_num_int}'
+    column_name = 'alliances{attempt_num_int}'.format(
+        attempt_num_int=attempt_num_int)
     season_id = row['season_id']
     alliance_ids = [None] * 3
     if column_name not in row.index:

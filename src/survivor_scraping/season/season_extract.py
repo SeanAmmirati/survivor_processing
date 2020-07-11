@@ -8,10 +8,13 @@ from ..helpers.extract_helpers import check_season_status, search_for_new_season
 
 
 def season_url(locality, season):
+
     if season != '':
-        return f'https://survivor.fandom.com/wiki/{locality.replace(" ", "_")}:_{season.replace(" " , "_")}'
+        suffix = locality.replace(' ', '_') + ':_' + season.replace(' ', '_')
     else:
-        return f'https://survivor.fandom.com/wiki/{locality.replace(" ", "_")}'
+        suffix = locality.replace(' ', '_')
+
+    return 'https://survivor.fandom.com/wiki/' + suffix
 
 
 def process_season(locality, season):

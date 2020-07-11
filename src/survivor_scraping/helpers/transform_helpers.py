@@ -2,9 +2,9 @@ import pandas as pd
 
 
 def sync_with_remote(df, eng, table_name):
-    specs = pd.read_sql(f"""SELECT column_name, data_type
+    specs = pd.read_sql("""SELECT column_name, data_type
                             FROM information_schema.columns
-                            WHERE table_name='{table_name}'""",
+                            WHERE table_name='{table_name}'""".format(table_name=table_name),
                         con=eng).set_index('column_name')
 
     pg_dtype_to_python = {
@@ -31,7 +31,8 @@ def sync_with_remote(df, eng, table_name):
 
     # For now, just remove anything not on remote (since it has years of history...)
     not_on_remote = list(set(df.columns) - set(remote_columns))
-    print(f'Removed columns: {",".join(not_on_remote)}')
+    rem_cols_str = ",".join(not_on_remote)
+    print('Removed columns: {rem_cols_str}'.format(rem_cols_str=rem_cols_str))
 
     df.drop(columns=not_on_remote, inplace=True)
     return df

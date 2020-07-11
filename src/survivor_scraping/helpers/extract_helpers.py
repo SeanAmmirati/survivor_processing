@@ -30,7 +30,8 @@ def check_season_status(con, season_name, asof=None):
     2: This is a future season
 
     """
-    q = f"SELECT name, showing_started, showing_ended FROM survivor.season WHERE name = '{season_name}'"
+    q = "SELECT name, showing_started, showing_ended FROM survivor.season WHERE name = '{season_name}'".format(
+        season_name=season_name)
 
     df = pd.read_sql(q, con=con)
 
