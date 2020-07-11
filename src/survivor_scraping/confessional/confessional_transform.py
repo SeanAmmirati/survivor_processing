@@ -34,6 +34,8 @@ def create_contestant_season_dict(eng, conf_df):
 
 
 def transform_confessionals(conf_df, eng):
+    if conf_df.empty:
+        return conf_df
     manual_additions = {
         'cochran_5': 123,
         'roxy_35': 421,
