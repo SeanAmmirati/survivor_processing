@@ -130,13 +130,9 @@ def sync_confessionals(data_dir='test'):
 
             title = f['title']
             full_path = os.path.join(data_dir, subfolder, title) + '.docx'
-
             if title not in data_files:
                 download_special_file(f, full_path)
             else:
-                match_files = [l_f for l_f in data_files if l_f == title]
-                assert len(match_files) == 1
-                match = match_files[0]
                 m_date = os.path.getmtime(full_path)
                 print(pd.to_datetime(m_date, utc=True, unit='s'))
                 print(f['modifiedDate'])
