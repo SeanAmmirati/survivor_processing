@@ -134,7 +134,6 @@ def sync_confessionals(data_dir='test'):
                 download_special_file(f, full_path)
             else:
                 m_date = os.path.getmtime(full_path)
-                print(pd.to_datetime(m_date, utc=True, unit='s'))
                 print(f['modifiedDate'])
                 if pd.to_datetime(f['modifiedDate']) > pd.to_datetime(m_date, utc=True, unit='s'):
                     # Overwrite it
@@ -167,40 +166,3 @@ def pull_confessionals_files(drive):
         subfolders_to_files[subfolder['title']] = files
 
     return subfolders_to_files
-
-
-def sync_confessionals(data_dir='test'):
-    if not os.path.exists(data_dir):
-        os.mkdir(data_dir)
-
-    gauth = GoogleAuth()
-    gauth.LoadCredentialsFile('google_drive_creds.txt')
-
-    drive = GoogleDrive(gauth)
-
-    gd_files = pull_confessionals_files(drive)
-
-    for subfolder, file_list in gd_files.items():
-        if not os.path.exists(os.path.join(data_dir, subfolder)):
-            os.mkdir(os.path.join(data_dir, subfolder))
-        data_files = os.listdir(os.path.join(data_dir, subfolder))
-
-        for f in file_list:
-
-            title = f['title']
-            full_path = os.path.join(data_dir, subfolder, title)
-
-            if title not in data_files:
-                download_special_file(f, full_path)
-            else:
-                match_files = [l_f for l_f in data_files if l_f == title]
-                assert len(match_files) == 1
-                match = match_files[0]
-                m_date = os.path.getmtime(full_path)
-                if pd.to_datetime(['modifiedDate']) > pd.to_datetime(m_date):
-                    # Overwrite it
-                    download_special_file(f, full_path)
-                    print('Overwrote the file with a newer version')
-                else:
-                    print('Newest file already in local directory')
-    return data_files, gd_files
