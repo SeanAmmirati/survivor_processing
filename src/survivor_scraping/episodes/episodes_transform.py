@@ -69,7 +69,7 @@ def alter_key(k):
     k = k.replace('Kelley wentworth 45', 'Kelley Wentworth 45')
     k = k.replace('Sandra Diaz-Twine 41', 'Sandra Diaz-Twine 40')
     k = k.replace('Rob Mariano 41', 'Rob Mariano 33')
-    k = k.replace('Kim Spradlin-Wolfe 40', 'Kim Spradlin 40')
+    k = k.replace('Kim Spradlin 40', 'Kim Spradlin-Wolfe 40')
 
     if k == 'Survivor: Palau 25':
         k = None

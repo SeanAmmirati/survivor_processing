@@ -1,4 +1,5 @@
 import pandas as pd
+import numpy as np
 
 
 def sync_with_remote(df, eng, table_name):
