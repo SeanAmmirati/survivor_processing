@@ -64,7 +64,7 @@ def process_viewership(df, viewership_col='viewership', *args, **kwargs):
     try:
         ret_col = df[viewership_col].str.extract(
             '(\d+\.\d+)').astype(float) * 1e8
-    except KeyError:
+    except (KeyError, AttributeError):
         ret_col = pd.DataFrame(np.repeat(None, df.shape[0]))
         ret_col.iloc[:, 0] = ret_col.iloc[:, 0].astype(float)
     return ret_col
