@@ -73,10 +73,11 @@ def tc_transform(df, full_name_dict_to_id):
     rel_columns = df.columns[df.columns.isin(
         ['contestant', 'voted_for', 'vote_counted', 'episode'])]
 
-    df = df[df['voted_for'].notnull()]
+    df = df[df['voted_for'].notnull()].reset_index(drop=True)
 
     should_be_unique = ['season_id', 'episode_id',
                         'tc_number', 'contestant_id']
+
     df['vote_number'] = df.groupby(should_be_unique)[
         'total_players_remaining'].transform(lambda x: x.rank(method='first'))
 
