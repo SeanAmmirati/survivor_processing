@@ -98,8 +98,8 @@ MIMETYPES = {
 
 
 def download_special_file(file, output_filename):
-    if file['mimeType'] in mimetypes:
-        download_mimetype = mimetypes[file['mimeType']]
+    if file['mimeType'] in MIMETYPES:
+        download_mimetype = MIMETYPES[file['mimeType']]
         file.GetContentFile(output_filename, mimetype=download_mimetype)
 
     else:
