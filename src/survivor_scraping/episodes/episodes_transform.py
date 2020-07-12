@@ -150,7 +150,10 @@ def create_full_vc_df(ep_df, name_mapping, contestants):
     expanded_content = initial_vc_df['content'].str.extract(extract_pattern)
     vc_content_columns = expanded_content.apply(create_vc_cols, axis=1)
     initial_vc_df.drop(columns='content', inplace=True)
-    vc_df = pd.concat([initial_vc_df, vc_content_columns], axis=1)
+    vc_df = pd.concat([initial_vc_df, vc_content_columns],
+                      axis=1).reset_index(drop=True)
+    print(vc_df.head())
+
     vc_df['recipient_id'] = vc_df[['person', 'season']].dropna().apply(
         lambda x: match_to_contestant_season(*x, contestants=contestants),
         axis=1)
@@ -296,7 +299,9 @@ def transform_episode_df(ep_df, season_to_id, name_mapping, contestants):
 def transform_episodes(ep_df, eng):
     season_to_id = create_season_name_to_id(eng)
     name_mapping = create_full_name_season_srs(eng)
-    contestants = pd.read_sql('''SELECT c.first_name, c.last_name, cs.season_id, cs.contestant_season_id
+    print(name_mapping)
+    contestants = pd.read_sql('''SELECT c.first_name, c.last_name,
+                                        cs.season_id, cs.contestant_season_id
                                  FROM survivor.contestant_season cs
                                  JOIN survivor.contestant c
                                  ON cs.contestant_id = c.contestant_id''', con=eng)
