@@ -57,6 +57,7 @@ def transform_reddit(reddit_dfs, eng):
     for i, df in enumerate(reddit_dfs):
         if df.empty or ('created_utc' not in df):
             ret_list.append(df)
+            continue
         df[['created_dt']] = process_utc(df)
 
         processing_columns = OrderedDict()
