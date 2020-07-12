@@ -116,8 +116,10 @@ def sync_confessionals(data_dir='test'):
 
     GoogleAuth.DEFAULT_SETTINGS['client_config_file'] = os.path.abspath(os.path.join(os.path.dirname(
         __file__), '../../../../client_secrets.json'))
+    creds_file = os.path.abspath(os.path.join(os.path.dirname(
+        __file__), '../../../../google_drive_creds.txt'))
     gauth = GoogleAuth()
-    gauth.LoadCredentialsFile('google_drive_creds.txt')
+    gauth.LoadCredentialsFile(creds_file)
 
     drive = GoogleDrive(gauth)
 
