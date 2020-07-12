@@ -54,8 +54,8 @@ def transform_reddit(reddit_dfs, eng):
     table_names = ['reddit_' + t for t in table_names]
 
     for i, df in enumerate(reddit_dfs):
+        df[['created_dt']] = process_utc(df)
         processing_columns = {
-            ('created_dt', ): process_utc,
             ('most_recent_season',): process_nearest_season_started,
             ('most_recent_episode',): process_nearest_episode_aired,
             ('within_season',): process_within_season
