@@ -114,8 +114,8 @@ def sync_confessionals(data_dir='test'):
     if not os.path.exists(data_dir):
         os.mkdir(data_dir)
 
-    GoogleAuth.DEFAULT_SETTINGS['client_config_file'] = os.path.dirname(
-        __file__)
+    GoogleAuth.DEFAULT_SETTINGS['client_config_file'] = os.path.join(os.path.dirname(
+        __file__), 'client_config.json')
     gauth = GoogleAuth()
     gauth.LoadCredentialsFile('google_drive_creds.txt')
 
