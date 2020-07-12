@@ -2,6 +2,7 @@ from ..helpers.db_funcs import create_season_times, create_episode_times
 from ..helpers.transform_helpers import add_to_df, coerce_col, sync_with_remote
 
 import pandas as pd
+from collections import OrderedDict
 
 
 def process_utc(df, *args, **kwargs):
@@ -55,11 +56,15 @@ def transform_reddit(reddit_dfs, eng):
 
     for i, df in enumerate(reddit_dfs):
         df[['created_dt']] = process_utc(df)
-        processing_columns = {
-            ('most_recent_season',): process_nearest_season_started,
-            ('most_recent_episode',): process_nearest_episode_aired,
-            ('within_season',): process_within_season
-        }
+
+        processing_columns = OrderedDict()
+
+        processing_columns[('created_dt',)] = process_utc
+        processing_columns[('most_recent_season', )
+                           ] = process_nearest_season_started
+        processing_columns[('most_recent_episode',)
+                           ] = process_nearest_episode_aired
+        processing_columns[('within_season', )] = process_within_season
 
         added = add_to_df(df, processing_columns,
                           inplace=False, season_times=season_times,
