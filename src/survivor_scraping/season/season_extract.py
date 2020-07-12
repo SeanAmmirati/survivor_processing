@@ -97,6 +97,7 @@ def extract_seasons(con, asof=None):
             data['type'] = 'Survivor'
 
             if check_season_status(con, season, asof) == 1:
+                print(season)
                 idx = get_season_id(con, season)
             else:
                 idx = new_idx

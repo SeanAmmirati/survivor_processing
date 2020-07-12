@@ -16,13 +16,14 @@ DOCS_URL_TEMPLATE = 'https://docs.google.com/spreadsheets/d/{id}/export?format=x
 SURVIVOR_SOURCE = 'https://www.truedorktimes.com/survivor/boxscores/data.htm'
 
 
-def create_data_dict():
+def create_data_dict(subset=None):
     ret_dict = {}
     sp = bs4.BeautifulSoup(requests.get(SURVIVOR_SOURCE).content)
     cast_elements = sp.find_all('ul', attrs={'class': 'cast'})
 
     for e in cast_elements:
         attrs = e.find('a').attrs
+
         try:
             if 'spreadsheet' in attrs['href']:
                 v = attrs['href'][:-1].split('/')[-1]
@@ -32,7 +33,13 @@ def create_data_dict():
                 for p in ':.-,':
                     k = k.replace(p, '')
                 k = k.replace('\n', '')[1:]
+
+                if subset:
+                    if k.split('_')[0] not in subset:
+                        continue
+
                 ret_dict[k] = v
+
             else:
                 pass
         except KeyError:
@@ -52,14 +59,15 @@ def save_survivor_excel(sheets_id, readable_name, dest_folder='../data/raw'):
     req.close()
 
 
-def pull_and_save_excels(data_dict=None, dest_folder='../data/raw'):
+def pull_and_save_excels(data_dict=None, subset=None, dest_folder='../data/raw'):
     if not data_dict:
-        data_dict = create_data_dict()
+        data_dict = create_data_dict(subset=subset)
     for k, v in data_dict.items():
         save_survivor_excel(v, k, dest_folder=dest_folder)
 
 
 # Above is for the actual excels...
+
 
 def empty_cond(ws, cell, *args, **kwargs):
     return not cell.value
@@ -380,8 +388,11 @@ season_type_map = {
 }
 
 
-def extract_episode_stats(eng, data_path='../data/raw/Data From Geeks/', asof=None):
-    raw_files = glob.glob('{data_path}/*'.format(data_path=data_path))
+def extract_episode_stats(eng, data_path=None, asof=None):
+
+    if data_path is None:
+        data_path = os.path.join(os.path.dirname(__file__),
+                                 '../../../data/raw/truedorks')
     new_seasons = search_for_new_seasons(eng, asof=asof)
 
     new_seasons_df = pd.read_sql(con=eng,
@@ -390,6 +401,11 @@ def extract_episode_stats(eng, data_path='../data/raw/Data From Geeks/', asof=No
     search_string = new_seasons_df['type'].map(
         {v: k for k, v in season_type_map.items()}) + new_seasons_df['season_number'].astype(int).astype(str)
     print(search_string)
+
+    subset_dl = [y for y in search_string]
+    pull_and_save_excels(None, subset=subset_dl, dest_folder=data_path)
+
+    raw_files = glob.glob('{data_path}/*'.format(data_path=data_path))
 
     raw_files = [f for f in raw_files if any(
         re.search(y, f) for y in search_string)]

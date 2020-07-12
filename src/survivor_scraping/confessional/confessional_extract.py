@@ -9,6 +9,8 @@ from ..helpers.db_funcs import get_ep_id, get_ep_id_by_number, get_season_id_by_
 from ..helpers.extract_helpers import search_for_new_seasons
 import glob
 import re
+from pydrive.auth import GoogleAuth
+from pydrive.drive import GoogleDrive
 import numpy as np
 
 season_type_map = {
@@ -65,8 +67,12 @@ def collect_confessionals(raw_files, eng):
 
 
 def extract_confessionals(eng,
-                          data_path='../data/raw/Survivor Confessional_s Archive (1-10, 11_, 12_, 21-35, 40)',
+                          data_path=None,
                           asof=None):
+    if data_path is None:
+        data_path = os.path.join(os.path.dirname(__file__),
+                                 '../../../data/raw/confessionals')
+    sync_confessionals(data_path)
     raw_files = glob.glob(os.path.join(data_path, '*', '*'))
     new_seasons = search_for_new_seasons(eng, asof=asof)
 
@@ -82,3 +88,123 @@ def extract_confessionals(eng,
 
     full_df = collect_confessionals(raw_files, eng)
     return full_df
+
+
+# Syncing with Google Drive (for Confessional Data)
+MIMETYPES = {
+    'application/vnd.google-apps.document': 'application/vnd.openxmlformats-officedocument.wordprocessingml.document',
+    'application/vnd.google-apps.spreadsheet': 'application/vnd.openxmlformats-officedocument.spreadsheetml.sheet'
+}
+
+
+def download_special_file(file, output_filename):
+    if file['mimeType'] in mimetypes:
+        download_mimetype = mimetypes[file['mimeType']]
+        file.GetContentFile(output_filename, mimetype=download_mimetype)
+
+    else:
+        file.GetContentFile(output_filename)
+
+    # Work around, closing file
+    for c in file.http.connections.values():
+        c.close()
+
+
+def sync_confessionals(data_dir='test'):
+    if not os.path.exists(data_dir):
+        os.mkdir(data_dir)
+
+    gauth = GoogleAuth()
+    gauth.LoadCredentialsFile('google_drive_creds.txt')
+
+    drive = GoogleDrive(gauth)
+
+    gd_files = pull_confessionals_files(drive)
+
+    for subfolder, file_list in gd_files.items():
+        if not os.path.exists(os.path.join(data_dir, subfolder)):
+            os.mkdir(os.path.join(data_dir, subfolder))
+        data_files = os.listdir(os.path.join(data_dir, subfolder))
+
+        for f in file_list:
+
+            title = f['title']
+            full_path = os.path.join(data_dir, subfolder, title) + '.docx'
+
+            if title not in data_files:
+                download_special_file(f, full_path)
+            else:
+                match_files = [l_f for l_f in data_files if l_f == title]
+                assert len(match_files) == 1
+                match = match_files[0]
+                m_date = os.path.getmtime(full_path)
+                print(pd.to_datetime(m_date, utc=True, unit='s'))
+                print(f['modifiedDate'])
+                if pd.to_datetime(f['modifiedDate']) > pd.to_datetime(m_date, utc=True, unit='s'):
+                    # Overwrite it
+                    download_special_file(f, full_path)
+                    print('Overwrote the file with a newer version')
+                else:
+                    print('Newest file already in local directory')
+
+
+def pull_confessionals_files(drive):
+
+    query = """title contains 'Archive'
+               and 'Ismael' in owners
+               and title contains 'Survivor Confessional'
+               and mimeType = 'application/vnd.google-apps.folder'"""
+
+    folder_id = drive.ListFile(dict(q=query)).GetList()[0]['id']
+
+    subfolder_query = """'{folder_id}' in parents
+                           and mimeType = 'application/vnd.google-apps.folder'""".format(folder_id=folder_id)
+
+    subfolders = drive.ListFile(dict(q=subfolder_query)).GetList()
+
+    subfolders_to_files = {}
+    for subfolder in subfolders:
+        files_query = "'{folder_id}' in parents".format(
+            folder_id=subfolder['id'])
+        files = drive.ListFile(dict(q=files_query)).GetList()
+
+        subfolders_to_files[subfolder['title']] = files
+
+    return subfolders_to_files
+
+
+def sync_confessionals(data_dir='test'):
+    if not os.path.exists(data_dir):
+        os.mkdir(data_dir)
+
+    gauth = GoogleAuth()
+    gauth.LoadCredentialsFile('google_drive_creds.txt')
+
+    drive = GoogleDrive(gauth)
+
+    gd_files = pull_confessionals_files(drive)
+
+    for subfolder, file_list in gd_files.items():
+        if not os.path.exists(os.path.join(data_dir, subfolder)):
+            os.mkdir(os.path.join(data_dir, subfolder))
+        data_files = os.listdir(os.path.join(data_dir, subfolder))
+
+        for f in file_list:
+
+            title = f['title']
+            full_path = os.path.join(data_dir, subfolder, title)
+
+            if title not in data_files:
+                download_special_file(f, full_path)
+            else:
+                match_files = [l_f for l_f in data_files if l_f == title]
+                assert len(match_files) == 1
+                match = match_files[0]
+                m_date = os.path.getmtime(full_path)
+                if pd.to_datetime(['modifiedDate']) > pd.to_datetime(m_date):
+                    # Overwrite it
+                    download_special_file(f, full_path)
+                    print('Overwrote the file with a newer version')
+                else:
+                    print('Newest file already in local directory')
+    return data_files, gd_files
