@@ -107,7 +107,7 @@ def download_special_file(file, output_filename, n_tries=10):
             _download_special_file(file, output_filename)
         except OSError:
             try_number += 1
-            sleep(np.random_choice([1, 2, 3]))
+            sleep(np.random.choice([1, 2, 3]))
 
             if try_number > n_tries:
                 raise
