@@ -13,6 +13,8 @@ from pydrive.auth import GoogleAuth
 from pydrive.drive import GoogleDrive
 import numpy as np
 
+from time import sleep
+
 season_type_map = {
     's': 'Survivor',
     'au': 'Australian Survivor',
@@ -97,7 +99,24 @@ MIMETYPES = {
 }
 
 
-def download_special_file(file, output_filename):
+def download_special_file(file, output_filename, n_tries=10):
+    try_number = 0
+
+    while True:
+        try:
+            _download_special_file(file, output_filename)
+        except OSError:
+            try_number += 1
+            sleep(np.random.choice([1, 2, 3]))
+
+            if try_number > n_tries:
+                raise
+        else:
+            break
+
+
+def _download_special_file(file, output_filename):
+
     if file['mimeType'] in MIMETYPES:
         download_mimetype = MIMETYPES[file['mimeType']]
         file.GetContentFile(output_filename, mimetype=download_mimetype)
@@ -114,8 +133,12 @@ def sync_confessionals(data_dir='test'):
     if not os.path.exists(data_dir):
         os.mkdir(data_dir)
 
+    GoogleAuth.DEFAULT_SETTINGS['client_config_file'] = os.path.abspath(os.path.join(os.path.dirname(
+        __file__), '../../../../client_secrets.json'))
+    creds_file = os.path.abspath(os.path.join(os.path.dirname(
+        __file__), '../../../../google_drive_creds.txt'))
     gauth = GoogleAuth()
-    gauth.LoadCredentialsFile('google_drive_creds.txt')
+    gauth.LoadCredentialsFile(creds_file)
 
     drive = GoogleDrive(gauth)
 

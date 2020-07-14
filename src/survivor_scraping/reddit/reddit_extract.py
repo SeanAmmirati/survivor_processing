@@ -1,6 +1,8 @@
 import requests
 from datetime import datetime
 import pandas as pd
+from time import sleep
+import numpy as np
 
 
 def api_request(subreddit, start_date, end_date, sub_or_comment='submission'):
@@ -8,10 +10,11 @@ def api_request(subreddit, start_date, end_date, sub_or_comment='submission'):
                     after_ts=int(start_date.timestamp()),
                     before_ts=int(end_date.timestamp()),
                     subreddit=subreddit)
+
     return ('https://api.pushshift.io/reddit/{sub_or_comment}/search/'
-            '?after={after_ts}'
+            '?limit=1000&after={after_ts}'
             '&before={before_ts}'
-            '&sort=asc&subreddit={subreddit}&limit=1000').format(**fmt_dict)
+            '&sort=asc&subreddit={subreddit}').format(**fmt_dict)
 
 
 def get_comment_id_url(submission_id):
@@ -48,6 +51,7 @@ def create_reddit_df(start_date=datetime(2000, 1, 1),
 
     dfs = [pd.DataFrame() for t in types]
 
+    max_retries = 10
     iteration = 0
 
     for i, t in enumerate(types):
@@ -55,12 +59,20 @@ def create_reddit_df(start_date=datetime(2000, 1, 1),
         max_date = start_date
 
         while max_date < end_date:
+            n_tries = 0
             iteration += 1
             url = api_request('survivor', max_date, end_date, sub_or_comment=t)
             r = requests.get(url)
-            if not r:
+
+            while (not r) and (n_tries <= max_retries):
+                n_tries += 1
+
+                sleep(np.random.choice([1, 2, 3]))
+                r = requests.get(url)
+            if n_tries > max_retries:
                 break
             new_data = pd.DataFrame(r.json()['data'])
+
             dfs[i] = pd.concat([dfs[i], new_data], ignore_index=True)
             if len(new_data) == 0:
                 break
@@ -83,5 +95,6 @@ def extract_reddit(eng, asof=None, stop=None):
     stop = pd.to_datetime(stop)
     asof = pd.to_datetime(asof)
 
+    print(stop)
     dfs = create_reddit_df(start_date=asof, end_date=stop, )
     return dfs

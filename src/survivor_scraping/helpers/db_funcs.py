@@ -128,7 +128,8 @@ def get_season_id_by_number_type(con, season_number, season_type):
 def get_season_id(con, season_name):
     if pd.isna(season_name):
         return None
-    q = "SELECT season_id FROM survivor.season WHERE name = '{season_name}'"
+    q = "SELECT season_id FROM survivor.season WHERE name = '{season_name}'".format(
+        season_name=season_name)
     res = con.execute(q).fetchall()[0][0]
     return res
 
