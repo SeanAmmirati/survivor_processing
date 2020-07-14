@@ -75,6 +75,7 @@ def extract_confessionals(eng,
         data_path = os.path.join(os.path.dirname(__file__),
                                  '../../../data/raw/confessionals')
     sync_confessionals(data_path)
+
     raw_files = glob.glob(os.path.join(data_path, '*', '*'))
     new_seasons = search_for_new_seasons(eng, asof=asof)
 
@@ -153,7 +154,9 @@ def sync_confessionals(data_dir='test'):
 
             title = f['title']
             full_path = os.path.join(data_dir, subfolder, title) + '.docx'
-            if title not in data_files:
+            print(title)
+            print(full_path)
+            if title + '.docx' not in data_files:
                 download_special_file(f, full_path)
             else:
                 m_date = os.path.getmtime(full_path)
