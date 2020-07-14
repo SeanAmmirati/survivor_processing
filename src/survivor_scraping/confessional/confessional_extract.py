@@ -130,7 +130,7 @@ def sync_confessionals(data_dir='test'):
 
             title = f['title']
             full_path = os.path.join(data_dir, subfolder, title) + '.docx'
-            if title not in data_files:
+            if title + '.xlsx' not in data_files:
                 download_special_file(f, full_path)
             else:
                 m_date = os.path.getmtime(full_path)
