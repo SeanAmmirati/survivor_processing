@@ -154,8 +154,7 @@ def sync_confessionals(data_dir='test'):
 
             title = f['title']
             full_path = os.path.join(data_dir, subfolder, title) + '.docx'
-            print(title)
-            print(full_path)
+
             if title + '.docx' not in data_files:
                 download_special_file(f, full_path)
             else:

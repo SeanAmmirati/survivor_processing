@@ -91,6 +91,7 @@ def extract_reddit(eng, asof=None, stop=None):
     if stop is None:
         stop = datetime.now()
 
+    print(stop)
     stop = pd.to_datetime(stop)
     asof = pd.to_datetime(asof)
 
