@@ -7,7 +7,7 @@ import numpy as np
 import re
 from ..season.season_extract import season_url
 from ..helpers.extract_helpers import search_for_new_seasons
-from ..helpers.db_funcs import create_full_name_season_srs, get_season_id, create_full_name_srs, get_tribe_id, get_alliance_id
+from ..helpers.db_funcs import create_full_name_season_srs, get_season_id, create_full_name_srs, get_tribe_id, get_alliance_id, get_attempt_number
 
 
 def create_contestant_url(first, last):
@@ -371,10 +371,10 @@ def extract_contestants(con, asof=None):
 
         contestants_df = pd.concat([contestants_df, contestant_df])
 
-    u_tribes = find_unique_tribes(contestants_df)
+    u_tribes = find_unique_tribes(contestants_df, con)
     u_tribes = list(set([t.replace('► ', '') for t in u_tribes]))
 
-    u_alliances = find_unique_alliances(contestants_df)
+    u_alliances = find_unique_alliances(contestants_df, con)
 
     tribal_df = pd.DataFrame([process_tribe(t) for t in u_tribes])
     if not tribal_df.empty:
@@ -428,11 +428,36 @@ def find_unique_multiple_columns(df, columns):
     return list(ret)
 
 
-def find_unique_tribes(df):
-    tribe_cols = df.columns[df.columns.str.contains('tribes')]
-    return find_unique_multiple_columns(df, tribe_cols)
+def find_unique_tribes(df, eng):
+    attempt_number = df.apply(lambda x: get_attempt_number(
+        eng, x['contestant_season_id'], x['contestant_id']), axis=1).reset_index(drop=True)
+
+    tr_cols = 'tribes' + \
+        attempt_number.apply(lambda x: str(int(x)) if x > 1 else '')
+
+    l_of_l = df.reset_index().apply(lambda x: x[tr_cols.loc[x.name]], axis=1)
+    ret = set()
+    for l in l_of_l:
+        if isinstance(l, list):
+            ret = ret.union(set(l))
+
+    return ret
 
 
-def find_unique_alliances(df):
-    alliance_cols = df.columns[df.columns.str.contains('alliances')]
-    return find_unique_multiple_columns(df, alliance_cols)
+def find_unique_alliances(df, eng):
+    attempt_number = df.apply(lambda x: get_attempt_number(
+        eng, x['contestant_season_id'], x['contestant_id']), axis=1).reset_index(drop=True)
+
+    alliances_cols = 'alliances' + \
+        attempt_number.apply(lambda x: str(int(x)) if x > 1 else '')
+
+    l_of_l = df.reset_index().apply(
+        lambda x: x[alliances_cols.loc[x.name]
+                    ] if alliances_cols.loc[x.name] in x else None,
+        axis=1)
+    ret = set()
+    for l in l_of_l:
+        if isinstance(l, list):
+            ret = ret.union(set(l))
+
+    return ret

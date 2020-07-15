@@ -79,7 +79,7 @@ def tc_transform(df, full_name_dict_to_id):
                         'tc_number', 'contestant_id']
 
     df['vote_number'] = df.groupby(should_be_unique)[
-        'total_players_remaining'].transform(lambda x: x.rank(method='first'))
+        'total_players_remaining'].apply(lambda x: x.rank(method='first'))
 
     df.drop(columns=rel_columns, inplace=True)
 
