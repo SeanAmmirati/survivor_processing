@@ -20,12 +20,16 @@ def process_attempt_numbers(df, con, *args, **kwargs):
 
 
 def find_tribe_by_attempt_number(row, con):
+    tribe_ids = [None] * 4
+
+    if 'attempt_number' not in row:
+        return pd.Series(tribe_ids)
+
     attempt_num_int = int(row["attempt_number"])
     attempt_num_int = '' if attempt_num_int == 1 else attempt_num_int
     column_name = 'tribes{attempt_num_int}'.format(
         attempt_num_int=attempt_num_int)
     season_id = row['season_id']
-    tribe_ids = [None] * 4
 
     for i, tribe in enumerate(row[column_name]):
         tribe_cleaned = tribe.replace('► ', '')
@@ -36,12 +40,16 @@ def find_tribe_by_attempt_number(row, con):
 
 
 def find_alliance_by_attempt_number(row, con):
+    alliance_ids = [None] * 3
+
+    if 'attempt_number' not in row:
+        return pd.Series(alliance_ids)
+
     attempt_num_int = int(row["attempt_number"])
     attempt_num_int = '' if attempt_num_int == 1 else attempt_num_int
     column_name = 'alliances{attempt_num_int}'.format(
         attempt_num_int=attempt_num_int)
     season_id = row['season_id']
-    alliance_ids = [None] * 3
     if column_name not in row.index:
         print(row.index)
         return pd.Series(alliance_ids)
