@@ -105,10 +105,12 @@ def process_opponents(df, size=3, *args, **kwargs):
 
     for col in expanded:
         opponents[col] = expanded.merge(
-            df, left_on=col, right_on='name', how='left')['tribe_id']
+            df, left_on=col, right_on='name', how='left')['tribe_id'].astype(float)
 
     while opponents.shape[1] < size:
-        opponents[opponents.shape[1]] = None
+        rep = opponents.shape[1]
+        opponents[rep] = None
+        opponents[rep] = opponents[rep].astype(float)
     return opponents
 
 
