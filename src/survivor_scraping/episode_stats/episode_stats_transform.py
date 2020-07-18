@@ -73,7 +73,8 @@ def tc_transform(df, full_name_dict_to_id):
     rel_columns = df.columns[df.columns.isin(
         ['contestant', 'voted_for', 'vote_counted', 'episode'])]
 
-    df = df[df['voted_for'].notnull()].reset_index(drop=True)
+    df = df[df['episode_id'].notnull() & df['voted_for'].notnull()
+            ].reset_index(drop=True)
 
     should_be_unique = ['season_id', 'episode_id',
                         'tc_number', 'contestant_id']
@@ -90,7 +91,7 @@ def overall_transform(df, full_name_dict_to_id):
     df_names = {
         'ChW': 'challenge_wins',
         'ChA': 'challenge_appearances',
-        'SO': 'sitouts',
+        'SO': 'sitout',
         'VFB': 'voted_for_bootee',
         'VAP': 'votes_against_player',
         'TotV': 'total_number_of_votes_in_episode',
@@ -180,6 +181,13 @@ def transform_episode_stats(dfs, eng):
         full_name.update(yaml.load(f))
 
     dfs = transform_episode_stats_w_dict(dfs, full_name)
+
     dfs['overall_episode'] = sync_with_remote(
         dfs['overall_episode'], eng, 'episode_performance_stats')
+    dfs['immunity_challenge'] = sync_with_remote(
+        dfs['immunity_challenge'], eng, 'immunity_challenge')
+    dfs['reward_challenge'] = sync_with_remote(
+        dfs['reward_challenge'], eng, 'reward_challenge')
+    dfs['tribal_council'] = sync_with_remote(
+        dfs['tribal_council'], eng, 'vote')
     return dfs

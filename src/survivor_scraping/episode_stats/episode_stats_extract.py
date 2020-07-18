@@ -432,6 +432,9 @@ def extract_episode_stats(eng, data_path=None, asof=None):
             if not df.empty:
                 df['episode_id'] = df[['episode', 'season_id']].apply(
                     lambda x: get_ep_id_by_number(eng, x[0], x[1]), axis=1)
+            if df['episode_id'].isnull().sum() > 0:
+                import pdb
+                pdb.set_trace()
             try:
                 results[k] = pd.concat([results[k], df])
             except:
