@@ -5,6 +5,7 @@ import requests
 import bs4
 
 import pandas as pd
+import numpy as np
 
 from ..season.season_extract import season_url
 from ..helpers.db_funcs import get_ep_id, get_season_id
