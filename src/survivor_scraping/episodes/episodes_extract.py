@@ -1,5 +1,6 @@
 import os
 import re
+import urllib
 import requests
 
 import bs4
@@ -189,7 +190,7 @@ def find_episodes_for_season(season_type, season_name):
         extracted = extract_episode_info(ep_sp)
         extracted['wiki_link'] = ep
         extracted['season'] = season_name
-        extracted['episode'] = os.path.basename(ep).replace('_', ' ')
+        extracted['episode'] = urllib.parse.unquote(os.path.basename(ep).replace('_', ' '))
         srs_list.append(extracted)
 
     return pd.DataFrame(srs_list)

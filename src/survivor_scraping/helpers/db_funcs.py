@@ -188,7 +188,8 @@ def get_attempt_number(con, contestant_season_id,
 
 def get_ep_id(con, episode_name, season_id):
 
-    fmt_dict = dict(episode_name=episode_name, season_id=season_id)
+    fmt_dict = dict(episode_name=episode_name.replace("'", "''"),
+                    season_id=season_id)
     q = """SELECT episode_id FROM survivor.episode
              WHERE episode_name = '{episode_name}'
              AND season_id = {season_id}""".format(**fmt_dict)
