@@ -26,7 +26,7 @@ colorlog==4.1.0
 colour==0.1.5
 configparser==5.0.0
 croniter==0.3.30
-cryptography==2.9.2
+cryptography==3.2
 decorator==4.4.2
 defusedxml==0.6.0
 dill @ file:///home/conda/feedstock_root/build_artifacts/dill_1592315758554/work
