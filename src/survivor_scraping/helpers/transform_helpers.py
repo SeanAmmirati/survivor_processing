@@ -25,7 +25,7 @@ def sync_with_remote(df, eng, table_name):
         if col == 'index':
             continue
         try:
-            dtype = pg_dtype_to_python[specs.loc[col, 'data_type']]
+            dtype = pg_dtype_to_python[specs.loc[col, 'data_type'].iloc[0]]
         except KeyError:
             continue
         df[col] = df[col].astype(dtype)
