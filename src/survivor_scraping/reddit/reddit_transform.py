@@ -30,7 +30,7 @@ def process_within_season(df, season_times, *args, **kwargs):
                       right_on='season_id')
 
     within = merged['most_recent_season']
-    within[merged['created_dt'] > merged['showing_ended']] = None
+    within.loc[merged['created_dt'] > merged['showing_ended']] = None
     return pd.DataFrame(within)
 
 
