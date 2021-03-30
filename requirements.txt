@@ -107,7 +107,7 @@ ptyprocess==0.6.0
 pycodestyle @ file:///home/conda/feedstock_root/build_artifacts/pycodestyle_1589305246696/work
 pycparser==2.20
 pyflakes==2.2.0
-Pygments==2.6.1
+Pygments==2.7.4
 PyJWT==1.7.1
 pylint @ file:///Users/runner/miniforge3/conda-bld/pylint_1588950500861/work
 pyOpenSSL==19.1.0
