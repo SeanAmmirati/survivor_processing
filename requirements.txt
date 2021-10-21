@@ -9,7 +9,7 @@ arrow @ file:///Users/runner/miniforge3/conda-bld/arrow_1592592080004/work
 astroid @ file:///Users/runner/miniforge3/conda-bld/astroid_1591645088120/work
 attrs==19.3.0
 autopep8 @ file:///home/conda/feedstock_root/build_artifacts/autopep8_1591017828430/work
-Babel==2.8.0
+Babel==2.9.1
 backcall==0.1.0
 bcrypt==3.1.7
 beautifulsoup4 @ file:///Users/runner/miniforge3/conda-bld/beautifulsoup4_1589760920330/work
