@@ -73,7 +73,7 @@ jupyter-core==4.6.3
 lazy-object-proxy==1.4.3
 lockfile==0.12.2
 lxml @ file:///Users/runner/miniforge3/conda-bld/lxml_1589927536711/work
-Mako==1.1.0
+Mako==1.2.2
 Markdown @ file:///home/conda/feedstock_root/build_artifacts/markdown_1589366472132/work
 MarkupSafe==1.1.1
 marshmallow @ file:///home/conda/feedstock_root/build_artifacts/marshmallow_1594282733088/work
